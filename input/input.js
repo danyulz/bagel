@@ -1,5 +1,5 @@
 
-const textStyles = new Set(["normal", "lighter", "bold", "bolder", "100", "200", "300", "400", "500", "600", "700", "800", "900"]);
+const textStyles = new Set(["normal", "lighter", "bold", "bolder"]);
 
 let start_idx = 0;
 let inputCount = 0;
@@ -107,6 +107,8 @@ const textStyleListener = (input) => {
 
 }
 
+
+
 function dragElement(elmnt) {
     console.log(elmnt.children);
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -164,6 +166,10 @@ $("#addInputButton").click(() => {
     newInputHeader.innerHTML = "click me";
     newInputHeader.style.paddingInline = "3px";
     newInputHeader.style.fontSize = "0.8rem";
+    newInputHeader.style.display = "flex";
+    newInputHeader.style.alignItems = "center";
+    newInputHeader.style.justifyContent = "space-between";
+
 
     newInputHeader.id = newInputWrapper.id + "header";
 
@@ -182,6 +188,15 @@ $("#addInputButton").click(() => {
     
     newInput.spellcheck = false;
     newInput.wrap = "on";
+
+    var closeButton = document.createElement("div");
+    closeButton.style.backgroundColor = "red";
+    closeButton.style.width = "8px";
+    closeButton.style.height = "8px";
+    closeButton.style.borderRadius = "10px";
+
+
+    newInputHeader.appendChild(closeButton);
 
     newInputWrapper.appendChild(newInputHeader);
     newInputWrapper.appendChild(line);
