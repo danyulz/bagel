@@ -36,12 +36,10 @@ const addListeners = (input) => {
 }
 
 const addAllCommands = (input) => {
-    let fontSizeFinished = input.addEventListener("input", fontSizeListener(input));
-    let textStyleFinished = input.addEventListener("input", textStyleListener(input));
-    let colorFinished = input.addEventListener("input", colorListener(input));
-    let clearCommands = (fontSizeFinished && textStyleFinished && colorFinished);
-
-
+    input.addEventListener("input", fontSizeListener(input));
+    input.addEventListener("input", textStyleListener(input));
+    input.addEventListener("input", colorListener(input));
+    input.addEventListener("input", clearCommands(input));
 }
 
 const commandListener = (input) => {
@@ -132,7 +130,18 @@ const textStyleListener = (input) => {
 
 }
 
-const commandsFinishedListener = (clearCommands) => {}
+const clearCommands = (input) => {
+    let command = commandListener(input);
+
+    //command is not empty
+    if (command != "") {
+
+        //command has ended, i.e. user has pressed space bar
+        if (command.includes(" ")) {
+            input.value = input.value.replace("/" + command, "");
+        }
+    }
+}
 
 
 
