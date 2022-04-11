@@ -36,8 +36,12 @@ const addListeners = (input) => {
 }
 
 const addAllCommands = (input) => {
-    input.addEventListener("input", textStyleListener(input));
-    input.addEventListener("input", colorListener(input));
+    let fontSizeFinished = input.addEventListener("input", fontSizeListener(input));
+    let textStyleFinished = input.addEventListener("input", textStyleListener(input));
+    let colorFinished = input.addEventListener("input", colorListener(input));
+    let clearCommands = (fontSizeFinished && textStyleFinished && colorFinished);
+
+
 }
 
 const commandListener = (input) => {
@@ -74,7 +78,27 @@ const colorListener = (input) => {
 
             //change color of input
             input.style.color = command.replace(" ", "");
-            input.value = input.value.replace("/" + command, "");
+            // input.value = input.value.replace("/" + command, "");
+        }
+    }
+
+}
+
+const fontSizeListener = (input) => {
+
+    let command = commandListener(input);
+    console.log("hi1");
+
+    //command is not empty
+    if (command != "") {
+
+        //command has ended, i.e. user has pressed space bar
+        if (command.includes(" ")) {
+
+            console.log(command + "px");
+            //change color of input
+            input.style.fontSize = command.replace(" ", "") + "px";
+            // input.value = input.value.replace("/" + command, "");
         }
     }
 
@@ -99,13 +123,16 @@ const textStyleListener = (input) => {
                 if (item == command_parsed) {
                     weight = item;
                     input.style.fontWeight = weight;
-                    input.value = input.value.replace(" /" + weight, "");
+
                 }
             }
         }
     }
 
+
 }
+
+const commandsFinishedListener = (clearCommands) => {}
 
 
 
@@ -156,14 +183,15 @@ function dragElement(elmnt) {
 $("#addInputButton").click(() => {
     var newInputWrapper = document.createElement("div");
     newInputWrapper.id = "textarea-" + ++inputCount + "-wrapper";
+    newInputWrapper.className = "fade-in";
     
     newInputWrapper.style.backgroundColor = "#f7f7f7";
     newInputWrapper.style.position = "absolute";
     newInputWrapper.style.borderRadius = "5px";
-    newInputWrapper.style.boxShadow = "0 0 10px 1px #d9d9d9";
+    newInputWrapper.style.boxShadow = "0 0 10px 0.5px #d9d9d9";
 
     var newInputHeader = document.createElement("div");
-    newInputHeader.innerHTML = "click me";
+    newInputHeader.style.minHeight = "15px"
     newInputHeader.style.paddingInline = "3px";
     newInputHeader.style.fontSize = "0.8rem";
     newInputHeader.style.display = "flex";
@@ -172,6 +200,7 @@ $("#addInputButton").click(() => {
 
 
     newInputHeader.id = newInputWrapper.id + "header";
+    newInputHeader.className = "inputHeader";
 
     var line = document.createElement("hr");
     line.style.borderColor = "#e6e6e6";
@@ -190,11 +219,11 @@ $("#addInputButton").click(() => {
     newInput.wrap = "on";
 
     var closeButton = document.createElement("div");
-    closeButton.style.backgroundColor = "red";
-    closeButton.style.width = "8px";
-    closeButton.style.height = "8px";
-    closeButton.style.borderRadius = "10px";
+    closeButton.className = "closeButton";
 
+    closeButton.addEventListener("click", () => {
+        newInputWrapper.remove();
+    });
 
     newInputHeader.appendChild(closeButton);
 

@@ -27,6 +27,24 @@ textarea:focus {
     position: absolute;
 }
 
+.closeButton {
+    opacity: 0;
+    transition: opacity 0.2s ease-in, transform 0.2s ease-in-out, backgroundColor 0.2s ease-in-out;
+    border: 0.1px solid rgb(197, 197, 197);
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+}
+
+.closeButton:hover {
+    transform: scale(1.1);
+    background-color: rgb(255, 79, 79);
+}
+
+.inputHeader:hover .closeButton {
+    opacity: 1;
+}
+
 #addInputButton {
     position: absolute;
     right: 1rem;
@@ -38,8 +56,22 @@ textarea:focus {
     border-radius: 1rem;
     border-width: 0px;
     transition: transform 0.1s ease-in-out;
+    box-shadow: 0 0 10px 0.5px #c7c7c7;
 }
 
 #addInputButton:hover {
     transform: scale(1.05);
+}
+
+.fade-in {
+    animation: fadeInAnimation 0.2s ease 1;
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+     }
 }
