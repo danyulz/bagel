@@ -3,25 +3,32 @@ const textStyles = new Set(["normal", "lighter", "bold", "bolder", "h1", "h2", "
 
 let start_idx = 0;
 let inputCount = 0;
+let start_idxs = [0];
 let focusIndex = 1;
 
-$('#textarea-0-wrapper').on('input', function () {
+const addInputWrapperDynamicSizing = (inputWrapper, input) => {
 
-    let height = this.style.height > this.scrollHeight ? this.style.height : this.scrollHeight;
-    $(this)
-        .height(height)
-        .width(this.scrollWidth);
-});
+    $("#"+inputWrapper.id).on('input', function () {
+
+        let height = input.style.height > input.scrollHeight ? input.style.height : input.scrollHeight;
+
+        console.log(input.scrollWidth);
+        $(input)
+            .height(height)
+            .width(input.scrollWidth);
+    });
+}
 
 const minimizeHelper = (input) => {
 
     let inputWrapper = document.querySelector("#" + input.id + "-wrapper");
 
+    $("#" + inputWrapper.id).width(inputWrapper.scrollWidth);
+
     $(input).slideUp(200);
 
     console.log(input.scrollWidth);
 
-    $("#" + inputWrapper.id).width(inputWrapper.scrollWidth);
 }
 
 const maximizeHelper = (input) => {
@@ -88,22 +95,22 @@ const commandListener = (input) => {
 
     //determine where command starts (idx)
 
-    let idx = start_idx > input.value.length - 1 ? start_idx - 1 : input.value.length - 1;
+    let idx = start_idxs[input.attributes.inputCount] > input.value.length - 1 ? start_idxs[input.attributes.inputCount] - 1 : input.value.length - 1;
 
     //if no commands have been made '/'
-    if (start_idx == 0) {
+    if (start_idxs[input.attributes.inputCount] == 0) {
         idx = input.value.length - 1
     }
 
     for (let i = idx; i < input.value.length; ++i) {
 
         if (input.value[i] == '/') {
-            start_idx = i;
+            start_idxs[input.attributes.inputCount] = i;
         }
     }
 
     //return command (str after '/')
-    return input.value.substr(start_idx + 1);
+    return input.value.substr(start_idxs[input.attributes.inputCount] + 1);
 }
 
 const commandParser = (command) => {
@@ -304,6 +311,7 @@ $("#addInputButton").click(() => {
     line.style.borderWidth = "0.5px";
 
     var newInput = document.createElement("textarea");
+    newInput.attributes.inputCount = inputCount;
     newInput.id = "textarea-" + inputCount;
     newInput.style.backgroundColor = "#f7f7f7";
     newInput.style.marginInline = "3px";
@@ -320,8 +328,8 @@ $("#addInputButton").click(() => {
         deleteHelper(newInputWrapper);
     });
 
+    addInputWrapperDynamicSizing(newInputWrapper, newInput);
     newInputHeader.appendChild(closeButton);
-
     newInputWrapper.appendChild(newInputHeader);
     newInputWrapper.appendChild(line);
     newInputWrapper.appendChild(newInput);
