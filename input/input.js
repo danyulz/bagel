@@ -6,42 +6,6 @@ let inputCount = 0;
 let start_idxs = [0];
 let focusIndex = 1;
 
-const addInputWrapperDynamicSizing = (inputWrapper, input) => {
-
-    $("#"+inputWrapper.id).on('input', function () {
-
-        let height = input.style.height > input.scrollHeight ? input.style.height : input.scrollHeight;
-
-        console.log(input.scrollWidth);
-        $(input)
-            .height(height)
-            .width(input.scrollWidth);
-    });
-}
-
-const minimizeHelper = (input) => {
-
-    let inputWrapper = document.querySelector("#" + input.id + "-wrapper");
-
-    $("#" + inputWrapper.id).width(inputWrapper.scrollWidth);
-
-    $(input).slideUp(200);
-
-    console.log(input.scrollWidth);
-
-}
-
-const maximizeHelper = (input) => {
-
-    console.log("maximizing");
-
-    let inputWrapper = document.querySelector("#" + input.id + "-wrapper");
-
-    $(input).slideDown(200);
-
-    console.log(input.scrollWidth);
-}
-
 
 const addListeners = (input) => {
 
@@ -88,6 +52,7 @@ const runListeners = (input, command) => {
     colorListener(input, command);
     textStyleListener(input, command);
     deleteListener(input, command);
+    minimizeListener(input, command);
     testListener(input, command);
 }
 
@@ -125,7 +90,29 @@ const commandParser = (command) => {
 }
 
 const testListener = (input, command) => {
-    if (commandParser(command) == "bye") {
+    if (commandParser(command) == "new") {
+        let inputWrapper = document.querySelector("#" + input.id + "-wrapper");
+
+        let top = (+(inputWrapper.style.top.replace("px", "")) + 10) + "px";
+        let left = (+(inputWrapper.style.left.replace("px", "")) + 10) + "px";
+
+        console.log(top);
+        console.log(left);
+
+        let pos = [top, left];
+        // console.log(pos);
+        newInput(pos);
+    }
+
+    console.log(commandParser(command))
+    if (commandParser(command) == "clear") {
+        input.value = "";
+        start_idxs[input.attributes.inputCount] = 0;
+    }
+}
+
+const minimizeListener = (input, command) => {
+    if (commandParser(command) == "bye" || commandParser(command) == "`") {
         minimizeHelper(input);
     }
 }
@@ -195,6 +182,10 @@ const textStyleListener = (input, command) => {
     //ITALIZICIZE
     if (command_parsed == "tilt" || command_parsed == "i" || command_parsed == "slant") {
         input.style.fontStyle = "italic";
+    } 
+    if (command_parsed == "r") {
+        input.style.fontStyle = "initial";
+        input.style.fontWeight = "initial";
     }
 }
 
@@ -220,6 +211,37 @@ const deleteHelper = (inputWrapper) => {
     }, 150);
 }
 
+const addInputWrapperDynamicSizing = (inputWrapper, input) => {
+
+    $("#"+inputWrapper.id).on('input', function () {
+
+        let height = input.style.height > input.scrollHeight ? input.style.height : input.scrollHeight;
+        $(input)
+            .height(height)
+            .width(input.scrollWidth)
+        ;
+
+        $("#" + inputWrapper.id).width(inputWrapper.scrollWidth);       
+    });
+}
+
+const minimizeHelper = (input) => {
+
+    let inputWrapper = document.querySelector("#" + input.id + "-wrapper");
+
+    // $("#" + inputWrapper.id).width(inputWrapper.scrollWidth);    
+
+    $(input).slideUp(200);
+
+}
+
+const maximizeHelper = (input) => {
+
+    let inputWrapper = document.querySelector("#" + input.id + "-wrapper");
+
+    $(input).slideDown(200);
+}
+
 const clearCommands_SpaceBar = (input, command) => {
     input.value = input.value.replace("/" + command, "");
 }
@@ -232,7 +254,6 @@ function dragElement(elmnt) {
 
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     if (elmnt.children[0]) {
-        console.log("has header");
         // if present, the header is where you move the DIV from:
         elmnt.children[0].onmousedown = dragMouseDown;
     } else {
@@ -272,7 +293,7 @@ function dragElement(elmnt) {
     }
 }
 
-$("#addInputButton").click(() => {
+$("#infoButton").click(() => {
     var newInputWrapper = document.createElement("div");
     newInputWrapper.id = "textarea-" + inputCount + "-wrapper";
     newInputWrapper.className = "fade-in";
@@ -281,6 +302,88 @@ $("#addInputButton").click(() => {
     newInputWrapper.style.position = "absolute";
     newInputWrapper.style.borderRadius = "5px";
     newInputWrapper.style.boxShadow = "0 0 10px 0.5px #d9d9d9";
+
+    // newInputWrapper.addEventListener("mouseleave", () => {
+    //     console.log("hovering");
+    //     minimizeHelper(newInput);
+    // })
+
+    var newInputHeader = document.createElement("div");
+    newInputHeader.style.minHeight = "15px"
+    newInputHeader.style.paddingInline = "3px";
+    newInputHeader.style.fontSize = "0.8rem";
+    newInputHeader.style.display = "flex";
+    newInputHeader.style.alignItems = "center";
+    newInputHeader.style.justifyContent = "space-between";
+
+    newInputHeader.addEventListener("mouseenter", () => {
+        maximizeHelper(newInput);
+    })
+
+    newInputHeader.id = newInputWrapper.id + "header";
+    newInputHeader.className = "inputHeader";
+
+    var line = document.createElement("hr");
+    line.style.borderColor = "#e6e6e6";
+    line.style.marginTop = "0";
+    line.style.marginBottom = "0";
+    line.style.borderStyle = "solid";
+    line.style.borderWidth = "0.5px";
+
+    var newInput = document.createElement("textarea");
+    newInput.attributes.inputCount = inputCount;
+    newInput.id = "textarea-" + inputCount;
+    newInput.style.backgroundColor = "#f7f7f7";
+    newInput.style.marginInline = "3px";
+    newInput.style.paddingInline = "2px";
+    newInput.style.fontFamily = "'DM Sans', sans-serif";
+
+    newInput.innerHTML = 
+    "tips & tricks! \n\ncolors: /anycolor \n\nfont size: /# /h1, h2 ... \n\nfont style: /bold /b /tilt /i /r ... \n\n shortcuts: /clear /close /q /bye /delete /del"
+
+    newInput.spellcheck = false;
+    newInput.wrap = "on";
+    newInput.style.width = newInput.scrollWidth;
+    newInput.style.height = newInput.scrollHeight;
+
+    console.log(newInput.scrollWidth);
+    console.log(newInput.scrollHeight);
+
+    var closeButton = document.createElement("div");
+    closeButton.className = "closeButton";
+
+    closeButton.addEventListener("click", () => {
+        deleteHelper(newInputWrapper);
+    });
+
+    addInputWrapperDynamicSizing(newInputWrapper, newInput);
+    newInputHeader.appendChild(closeButton);
+    newInputWrapper.appendChild(newInputHeader);
+    newInputWrapper.appendChild(line);
+    newInputWrapper.appendChild(newInput);
+
+    $(".container").append(newInputWrapper);
+
+    dragElement(newInputWrapper);
+    addListeners(newInput);
+
+    inputCount++;
+});
+
+const newInput = (pos) => {
+    var newInputWrapper = document.createElement("div");
+    newInputWrapper.id = "textarea-" + inputCount + "-wrapper";
+    newInputWrapper.className = "fade-in";
+
+    newInputWrapper.style.backgroundColor = "#f7f7f7";
+    newInputWrapper.style.position = "absolute";
+    newInputWrapper.style.borderRadius = "5px";
+    newInputWrapper.style.boxShadow = "0 0 10px 0.5px #d9d9d9";
+    
+    if (pos != null) {
+        newInputWrapper.style.top = pos[0];
+        newInputWrapper.style.left = pos[1];
+    } 
 
     // newInputWrapper.addEventListener("mouseleave", () => {
     //     console.log("hovering");
@@ -340,4 +443,8 @@ $("#addInputButton").click(() => {
     addListeners(newInput);
 
     inputCount++;
+}
+
+$("#addInputButton").click(() => {
+    newInput();
 }) 
