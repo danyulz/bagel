@@ -1,0 +1,48 @@
+.login-text {
+    font-size: min(2rem, 100px);
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.login-input {
+    width: 320px;
+    height: 5vh;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    border-radius: 100px;
+    border-width: 0px;
+    background-color: rgb(240, 240, 240);
+    font-size: 10px;
+    text-align: center;
+    color: rgb(204, 204, 204);
+}
+
+.login {
+    font-size: 0.7rem;
+    height: 5vh;
+    border-radius: 100px;
+    margin-top: 10px;
+    color: rgb(250, 250, 250);
+    border-width: 0px;
+    background-color: rgb(216, 182, 139);;
+}
+
+.login:hover {
+    opacity: 0.8;
+}
+
+::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgb(212, 212, 212);
+    opacity: 1;
+    /* Firefox */
+}
+
+.login-options {
+    margin-top: 5px;
+    color: rgb(201, 170, 121);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    padding-inline: 5px;
+}
