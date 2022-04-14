@@ -7,6 +7,7 @@
 .login-input {
     width: 320px;
     height: 5vh;
+    max-height: 50px;
     margin-top: 3px;
     margin-bottom: 3px;
     border-radius: 100px;
@@ -14,7 +15,7 @@
     background-color: rgb(240, 240, 240);
     font-size: 10px;
     text-align: center;
-    color: rgb(204, 204, 204);
+    color: rgb(54, 54, 54);
 }
 
 .login {
@@ -24,7 +25,8 @@
     margin-top: 10px;
     color: rgb(250, 250, 250);
     border-width: 0px;
-    background-color: rgb(216, 182, 139);;
+    background-color: rgb(216, 182, 139);
+    font-weight: 600;
 }
 
 .login:hover {
@@ -45,4 +47,8 @@
     justify-content: space-between;
     font-size: 0.6rem;
     padding-inline: 5px;
+}
+
+.login-options a{
+    color: rgb(201, 170, 121);
 }

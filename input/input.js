@@ -101,7 +101,7 @@ const testListener = (input, command) => {
 
         let pos = [top, left];
         // console.log(pos);
-        newInput(pos);
+        newInput(pos, inputWrapper.style.zIndex+1);
     }
 
     console.log(commandParser(command))
@@ -370,7 +370,7 @@ $("#infoButton").click(() => {
     inputCount++;
 });
 
-const newInput = (pos) => {
+const newInput = (pos, zIndex) => {
     var newInputWrapper = document.createElement("div");
     newInputWrapper.id = "textarea-" + inputCount + "-wrapper";
     newInputWrapper.className = "fade-in";
@@ -378,6 +378,7 @@ const newInput = (pos) => {
     newInputWrapper.style.backgroundColor = "#f7f7f7";
     newInputWrapper.style.position = "absolute";
     newInputWrapper.style.borderRadius = "5px";
+    newInputWrapper.style.zIndex = zIndex;  
     newInputWrapper.style.boxShadow = "0 0 10px 0.5px #d9d9d9";
     
     if (pos != null) {

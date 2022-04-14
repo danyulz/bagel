@@ -19,22 +19,28 @@
             <div id="navbar-title">🍩 bagel.</div>
         </div>
         <div class="navbar-buttons">
-            <div class="button home">home</div>
-            <div class="icon">🚩</div>
-            <div class="button boards">boards</div>
-            <div class="icon">📋</div>
-            <div class="button profile">me</div>
-            <div class="icon">😉</div>
+            <div class="button-wrapper">
+                <a href="main.html" class="button home">home</a>
+                <div class="icon">🚩</div>
+            </div>
+            <div class="button-wrapper">
+                <a href="user_boards.html" class="button boards">boards</a>
+                <div class="icon">📋</div>
+            </div>
+            <div class="button-wrapper">
+                <a href="login.html" class="button profile selected">me</a>
+                <div class="icon">😉</div>
+            </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container fade-in">
         <div class="login-text">Welcome Back.</div>
-        <input type="text" class="login-input username box-shadow" placeholder="username" >
+        <input type="text" class="login-input username box-shadow" placeholder="username">
         <input type="text" class="login-input password box-shadow" placeholder="password">
-        <button class="login">login 🍩</button>
+        <button class="login">Let's Go! 🍩</button>
         <div class="login-options">
-            <div class="text">sign up</div>
-            <div class="text">forgot password?</div>
+            <a href="signup.html" class="text">sign up</a>
+            <a class="text">forgot password?</a>
         </div>
     </div>
     <!-- <button class="box-shadow" id="addInputButton" type="button">+</button>

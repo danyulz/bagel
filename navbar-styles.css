@@ -28,6 +28,10 @@
     font-weight: 500;
 }
 
+a {
+    text-decoration: none;
+}
+
 .navbar-buttons {
     display: flex;
     font-size: smaller;
@@ -39,9 +43,28 @@
     transition: color 0.2s ease-in;
 }
 
+.navbar-buttons .selected {
+    color: rgb(124, 124, 124);
+    font-weight: bold;
+}
+
 .navbar-buttons .button:hover {
     padding-inline: 4px;
-    color: rgb(58, 58, 58);
+    color: rgb(49, 49, 49);
+}
+
+.navbar-buttons:hover .icon {
+    opacity: 0;
+    width: 5px;
+}
+
+.button-wrapper {
+    display: flex;
+}
+
+.button-wrapper:hover .icon {
+    opacity: 1;
+    width: 20px;
 }
 
 .icon {
@@ -50,12 +73,13 @@
     width: 5px;
 }
 
-.button:hover + .icon {
+.button:hover+.icon {
     opacity: 1;
     width: 20px;
 }
 
-.icon:hover {
+.selected+.icon {
     opacity: 1;
     width: 20px;
+    transition: opacity 0.2s ease-in, width 0.2s ease-in
 }
