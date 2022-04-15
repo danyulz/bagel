@@ -56,38 +56,12 @@ textarea:focus {
     height: 1.5rem;
     color: grey;
     border-radius: 1rem;
-    background-color: #ffffff00;
     border-width: 0px;
     transition: transform 0.1s ease-in-out;
+    box-shadow: 0 0 10px 0.5px #c7c7c7;
 }
 
 #addInputButton:hover {
-    transform: scale(1.05);
-}
-
-#infoButton {
-    position: absolute;
-    padding: 0;
-    box-sizing: border-box;
-    left: 1rem;
-    bottom: 1rem;
-    width: 0.8rem;
-    height: 0.8rem;
-    border-radius: 0.5rem;
-    background-color: #ffffff00;
-    color: grey;
-    font-size: 0.5rem;
-    border-width: 0px;
-    transition: transform 0.1s ease-in-out;
-}
-
-.infoSheet {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-}
-
-#infoButton:hover {
     transform: scale(1.05);
 }
 
@@ -101,10 +75,6 @@ textarea:focus {
 
 .pop-out {
     animation: pop-out 0.2s ease-in 1;
-}
-
-.box-shadow {
-    box-shadow: 0 0 10px 0.5px #c7c7c7;
 }
 
 @keyframes fadeInAnimation {
@@ -139,29 +109,3 @@ textarea:focus {
     }
 }
 
-.extra-info {
-    display: none;
-    line-height: 30px;
-    font-size: 12px;
-      position: absolute;
-    top: 0;
-    left: 50px;
-  }
-  
-  .info:hover .extra-info {
-    display: block;
-  }
-  
-  .info {
-    font-size: 20px;
-    padding-left: 5px;
-    width: 20px;
-    border-radius: 15px;
-  }
-  
-  .info:hover {
-    background-color: white;
-    padding: 0 0 0 5px;
-    width: 315px;
-    text-align: left !important;
-  }
