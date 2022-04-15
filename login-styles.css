@@ -1,3 +1,34 @@
+.container {
+    display: flex;
+    align-items: center;
+}
+
+.author-text {
+    color: rgb(181, 181, 181);
+    padding-left: 20px;
+    margin-bottom: 30px;
+}
+
+.line-vertical {
+    width: 2px;
+    border-radius: 1px;
+    background-color: rgb(215, 179, 88);
+    height: 230;
+    margin-inline: 20px;
+}
+
+.bagel-hero {
+    font-size: 5rem;
+    font-weight: bold;
+}
+
+.login-wrapper {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    height: 230px;
+}
+
 .login-text {
     font-size: min(2rem, 100px);
     font-weight: bold;
@@ -19,7 +50,7 @@
 }
 
 .login {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     height: 5vh;
     border-radius: 100px;
     margin-top: 10px;
@@ -36,6 +67,7 @@
 ::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: rgb(212, 212, 212);
+    font-size: 0.9rem;
     opacity: 1;
     /* Firefox */
 }
@@ -45,10 +77,28 @@
     color: rgb(201, 170, 121);
     display: flex;
     justify-content: space-between;
-    font-size: 0.6rem;
+    font-size: 0.8rem;
     padding-inline: 5px;
 }
 
 .login-options a{
     color: rgb(201, 170, 121);
+}
+
+@media only screen and (max-width: 792px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .line-vertical {
+        display: none;
+    }
+
+    .line-horizontal {
+        height: 2px;
+        width: 300px;
+        border-radius: 5px;
+        background-color: rgb(215, 179, 88);
+        margin-bottom: 20px;
+    }
 }

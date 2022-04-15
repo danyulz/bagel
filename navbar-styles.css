@@ -34,7 +34,6 @@ a {
 
 .navbar-buttons {
     display: flex;
-    font-size: smaller;
 }
 
 .navbar-buttons .button {
