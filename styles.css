@@ -65,6 +65,32 @@ textarea:focus {
     transform: scale(1.05);
 }
 
+#infoButton {
+    position: absolute;
+    padding: 0;
+    box-sizing: border-box;
+    left: 1rem;
+    bottom: 1rem;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 0.5rem;
+    background-color: #ffffff00;
+    color: grey;
+    font-size: 0.5rem;
+    border-width: 0px;
+    transition: transform 0.1s ease-in-out;
+}
+
+.infoSheet {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+}
+
+#infoButton:hover {
+    transform: scale(1.05);
+}
+
 .fade-in {
     animation: fadeInAnimation 1s ease 1, pop-in 0.2s ease-in 1;
 }
