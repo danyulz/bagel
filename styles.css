@@ -52,13 +52,13 @@ textarea:focus {
     right: 1rem;
     bottom: 1rem;
     box-sizing: border-box;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2rem;
+    height: 2rem;
     color: grey;
+    font-size: 1rem;
     border-radius: 1rem;
     border-width: 0px;
     transition: transform 0.1s ease-in-out;
-    box-shadow: 0 0 10px 0.5px #c7c7c7;
 }
 
 #addInputButton:hover {
@@ -71,12 +71,11 @@ textarea:focus {
     box-sizing: border-box;
     left: 1rem;
     bottom: 1rem;
-    width: 0.8rem;
-    height: 0.8rem;
-    border-radius: 0.5rem;
-    background-color: #ffffff00;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 1rem;
     color: grey;
-    font-size: 0.5rem;
+    font-size: 1rem;
     border-width: 0px;
     transition: transform 0.1s ease-in-out;
 }
@@ -103,6 +102,9 @@ textarea:focus {
     animation: pop-out 0.2s ease-in 1;
 }
 
+.box-shadow {
+    box-shadow: 0 0 10px 0.5px #c7c7c7;
+}
 @keyframes fadeInAnimation {
     0% {
         opacity: 0;
