@@ -1,14 +1,14 @@
 <?php
 require 'config/config.php';
 
-var_dump($_POST);
+$error_true = false;
 
 if (
-    !isset($_POST['email']) || empty($_POST['email'])
-    || !isset($_POST['username']) || empty($_POST['username'])
+    !isset($_POST['username']) || empty($_POST['username'])
     || !isset($_POST['password']) || empty($_POST['password'])
 ) {
     $error = "Please fill out all required fields.";
+    $error_true = true;
 } else {
 
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -18,8 +18,8 @@ if (
         exit();
     }
 
-    $statement_registered = $mysqli->prepare("SELECT * FROM users WHERE username=? OR email=?");
-    $statement_registered->bind_param("ss", $_POST["username"], $_POST["email"]);
+    $statement_registered = $mysqli->prepare("SELECT * FROM users WHERE username=?");
+    $statement_registered->bind_param("s", $_POST["username"]);
     $execute_registered = $statement_registered->execute();
 
     if (!$execute_registered) {
@@ -29,14 +29,14 @@ if (
     $statement_registered->store_result();
 
     if ($statement_registered->num_rows > 0) {
-        $error = "Username or Email already used!";
+        $error = "Username already used!";
         $statement_registered->close();
     } else {
         $password = hash("sha256", $_POST["password"]);
 
-        $statement = $mysqli->prepare("INSERT INTO users(username, email, password) VALUES (?,?,?)");
+        $statement = $mysqli->prepare("INSERT INTO users(username, password) VALUES (?,?)");
 
-        $statement->bind_param("sss", $_POST["username"], $_POST["email"], $password);
+        $statement->bind_param("ss", $_POST["username"], $password);
 
         $executed = $statement->execute();
 
@@ -91,6 +91,7 @@ if (
         <div class="line-horizontal"></div>
         <div class="login-wrapper fade-in">
             <div class="login-text">Create Account.</div>
+            <?php if ($error_true) {echo $error;} ?>
             <div class="create-text success">Successfully created!</div>
             <button class="login" onclick="location.href = 'login.html';">Login! </button>
             <div class="login-options">
