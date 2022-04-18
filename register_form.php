@@ -44,12 +44,12 @@
             <div class="login-wrapper fade-in">
                 <div class="login-text">Create Account.</div>
 
-                <input type="text" class="login-input username box-shadow" placeholder="username" name="username">
-                <input type="text" class="login-input password box-shadow" placeholder="password" name="password">
+                <input type="text" class="login-input username" placeholder="username" name="username">
+                <input type="text" class="login-input password" placeholder="password" name="password">
 
                 <button type="submit" class="login">Register! 😎</button>
                 <div class="login-options">
-                    <a href="login.html" class="text">
+                    <a href="login.php" class="text">
                         << sign in </a>
                 </div>
             </div>

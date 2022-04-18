@@ -18,38 +18,28 @@ if (
         exit();
     }
 
-    $statement_registered = $mysqli->prepare("SELECT * FROM users WHERE username=?");
-    $statement_registered->bind_param("s", $_POST["username"]);
+    $password = hash("sha256", $_POST["password"]);
+
+    $statement_registered = $mysqli->prepare("SELECT * FROM users WHERE username=? AND password=?");
+    $statement_registered->bind_param("ss", $_POST["username"], $password);
     $execute_registered = $statement_registered->execute();
 
     if (!$execute_registered) {
         echo $mysqli->error;
     }
 
+    var_dump($_POST);
     $statement_registered->store_result();
 
-    echo $statement_registered->num_rows;
+
+    $isLoggedIn = false;
 
     if ($statement_registered->num_rows > 0) {
-        $error_true = true;
-        $error = "Username already taken!";
+        $isLoggedIn = true;  
+        $error = "Successfully Log In!";
         $statement_registered->close();
     } else {
-        $password = hash("sha256", $_POST["password"]);
-
-        $statement = $mysqli->prepare("INSERT INTO users(username, password) VALUES (?,?)");
-
-        $statement->bind_param("ss", $_POST["username"], $password);
-
-        $executed = $statement->execute();
-
-        if (!$executed) {
-            echo $mysqli->error;
-        }
-
-        $error = "Created Successfully!";
-
-        $statement->close();
+        $error = "Could not Login!";
     }
 }
 ?>
@@ -82,31 +72,50 @@ if (
                 <div class="icon">📋</div>
             </div>
             <div class="button-wrapper">
-                <a href="login.html" class="button profile selected">me</a>
+                <a href="login.php" class="button profile selected">me</a>
                 <div class="icon">😉</div>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="login-wrapper">
-            <div class="bagel-hero">Bagel 🍩</div>
-            <div class="author-text">// by Daniel He</div>
-        </div>
-        <div class="line-vertical"></div>
-        <div class="line-horizontal"></div>
-        <div class="login-wrapper fade-in">
-            <div class="login-text">Create Account.</div>
-            <?php if ($error_true) : ?>
-                <div class='create-text failed'><?php echo $error; ?></div>
-                <button class='login' onclick="location.href = 'register_form.php';">Go Back</button>
-            <?php else : ?>
-                <div class='create-text success'><?php echo $error; ?></div>
-                <button class='login' onclick="location.href = 'login.php';">Login</button>
-            <?php endif; ?>
-            <div class="login-options">
+    <form action="login.php" method="POST">
+
+        <?php if ($error_true) : ?>
+
+            <div class="container">
+                <div class="login-wrapper">
+                    <div class="bagel-hero">Bagel 🍩</div>
+                    <div class="author-text">// by Daniel He</div>
+                </div>
+                <div class="line-vertical"></div>
+                <div class="line-horizontal"></div>
+                <div class="login-wrapper fade-in">
+                    <div class="login-text">Welcome Back.</div>
+                    <input type="text" class="login-input username" placeholder="username" name="username">
+                    <input type="text" class="login-input password" placeholder="password" name="password">
+                    <button class='login' onclick="location.href = 'login.php';">Let's Go! 🍩</button>
+                    <div class="login-options">
+                        <a href="register_form.php" class="text">i'm new!</a>
+                        <a class="text">forgot password?</a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+
+        <?php else : ?>
+            <div class="container">
+                <div class="login-wrapper">
+                    <div class="bagel-hero">Bagel 🍩</div>
+                    <div class="author-text">// by Daniel He</div>
+                </div>
+                <div class="line-vertical"></div>
+                <div class="line-horizontal"></div>
+                <div class="login-wrapper fade-in">
+                    <div class="login-text"><?php echo $error;?></div>
+                </div>
+            </div>
+        <?php endif; ?>
+
+
+    </form>
     <!-- <button class="box-shadow" id="addInputButton" type="button">+</button>
     <button class="box-shadow" id="infoButton" type="button">?</button> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
