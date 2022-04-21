@@ -59,6 +59,8 @@
     background-color: rgb(216, 182, 139);
     font-weight: 600;
     width: 320px;
+    text-align: center;
+    line-height: 5vh;
 }
 
 .login:hover {

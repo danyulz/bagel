@@ -11,12 +11,7 @@ if (
     $error_true = true;
 } else {
 
-    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-    if ($mysqli->connect_errno) {
-        echo $mysqli->connect_error;
-        exit();
-    }
+    require('./util/db_connect.php');
 
     $password = hash("sha256", $_POST["password"]);
 
@@ -28,15 +23,16 @@ if (
         echo $mysqli->error;
     }
 
-    var_dump($_POST);
     $statement_registered->store_result();
 
-
-    $isLoggedIn = false;
+    $_SESSION["isLoggedIn"] = false;
 
     if ($statement_registered->num_rows > 0) {
-        $isLoggedIn = true;  
+        $isLoggedIn = true;
         $error = "Successfully Log In!";
+
+        $_SESSION["username"] = $_POST["username"];
+        $_SESSION["isLoggedIn"] = true;
         $statement_registered->close();
     } else {
         $error = "Could not Login!";
@@ -58,25 +54,8 @@ if (
 </head>
 
 <body>
-    <div class="navbar">
-        <div class="navbar-logo">
-            <div id="navbar-title">🍩 bagel.</div>
-        </div>
-        <div class="navbar-buttons">
-            <div class="button-wrapper">
-                <a href="main.html" class="button home">home</a>
-                <div class="icon">🚩</div>
-            </div>
-            <div class="button-wrapper">
-                <a href="user_boards.html" class="button boards">boards</a>
-                <div class="icon">📋</div>
-            </div>
-            <div class="button-wrapper">
-                <a href="login.php" class="button profile selected">me</a>
-                <div class="icon">😉</div>
-            </div>
-        </div>
-    </div>
+    <?php $type = "login";
+    require('./navbar/navbar.php') ?>
     <form action="login.php" method="POST">
 
         <?php if ($error_true) : ?>
@@ -109,15 +88,27 @@ if (
                 <div class="line-vertical"></div>
                 <div class="line-horizontal"></div>
                 <div class="login-wrapper fade-in">
-                    <div class="login-text"><?php echo $error;?></div>
+                    <?php if ($isLoggedIn) : ?>
+                        <div class="login-text"><?php echo "Hello " . $_SESSION["username"] . "!"; ?></div>
+                        <a href="user_boards.php" class="login">Enter App! 🍩</a>
+                    <?php else : ?>
+                        <div class="login-text">Welcome Back.</div>
+                        <input type="text" class="login-input username" style="box-shadow: 0 0 10px 0.5px #ffdada;
+;" placeholder="username" name="username">
+                        <input type="text" class="login-input password" style="box-shadow: 0 0 10px 0.5px #ffdada;
+;" placeholder="password" name="password">
+                        <button class='login' onclick="location.href = 'login.php';">Let's Go! 🍩</button>
+                        <div class="login-options">
+                            <a href="register_form.php" class="text">i'm new!</a>
+                            <a class="text">forgot password?</a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         <?php endif; ?>
 
 
     </form>
-    <!-- <button class="box-shadow" id="addInputButton" type="button">+</button>
-    <button class="box-shadow" id="infoButton" type="button">?</button> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="input/input.js"></script>
 </body>
