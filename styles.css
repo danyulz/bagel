@@ -47,6 +47,10 @@ textarea:focus {
     opacity: 1;
 }
 
+.board-item:hover .closeButton {
+    opacity: 1;
+}
+
 #addInputButton {
     position: absolute;
     right: 1rem;

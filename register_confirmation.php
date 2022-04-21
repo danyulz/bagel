@@ -1,5 +1,4 @@
 <?php
-require 'config/config.php';
 
 $error_true = false;
 

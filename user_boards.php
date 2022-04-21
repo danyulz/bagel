@@ -1,36 +1,21 @@
 <?php
+require('./util/db_connect.php');
 
-include './config/config.php';
+$sql = "SELECT * FROM user_boards";
 
-// var_dump($_SESSION);
+$results = $mysqli->query($sql);
 
-function insert()
-{
-
-    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-    if ($mysqli->connect_errno) {
-        echo $mysqli->connect_error;
-        exit();
-    }
-
-    $sql = "INSERT INTO user_boards (user_id, name) VALUES (1, 'temp');";
-
-    $results = $mysqli->query($sql);
-
-    if (!$results) {
-        echo $mysqli->error;
-        exit();
-    }
-
-    $num_boards = $results->num_rows;
-
-    echo $num_boards;
-
-    $mysqli->close();
+if (!$results) {
+    echo $mysqli->error;
+    exit();
 }
 
+// while ($row = $results->fetch_assoc()) {
+//     var_dump($row);
+//     echo "<hr></hr>";
+// }
 
+$mysqli->close();
 ?>
 
 <head>
@@ -51,24 +36,35 @@ function insert()
     require('./navbar/navbar.php') ?>
 
     <form>
-        <div class="container container-boards fade-in">
+        <div class="container container-boards">
             <div class="boards-wrapper">
-                <div class="boards-title">my boards</div>
-                <input type="submit" class="button" name="select" value="insert" />
+                <div style="display: flex; justify-content: space-between">
+                    <div class="boards-title">my boards</div>
+                    <input type="submit" class="insert-button" name="select" value="insert" />
+                </div>
                 <hr>
                 <div class="item-wrapper">
-                    <div class="board-item">
-                        <a href="main.html" class="board-item-name">Template 1</a href="main.html">
-                        <div class="board-item-last-used">2 hours ago</div>
-                    </div>
-                    <div class="board-item">
-                        <a href="main.html" class="board-item-name">Template 1</a href="main.html">
-                        <div class="board-item-last-used">3 days ago</div>
-                    </div>
-                    <div class="board-item">
-                        <a href="main.html" class="board-item-name">Template 1</a href="main.html">
-                        <div class="board-item-last-used">2+ months ago</div>
-                    </div>
+
+                    <?php while ($row = $results->fetch_assoc()) : ?>
+                        <div class="board-item fade-in">
+                            <a href="main.php" class="board-item-name" id=<?php echo $row["board_items_id"] ?>><?php echo $row["name"] ?></a>
+                            <div class="board-item-last-used">2 hours ago</div>
+                        </div>
+                        <script>
+                            var item = document.getElementById("<?php echo $row["board_items_id"] ?>");
+
+                            console.log(item);
+
+                            var closeButton = document.createElement("div");
+                            closeButton.className = "closeButton";
+
+                            item.append(closeButton)
+
+                            closeButton.addEventListener("click", () => {
+                                deleteHelper(item);
+                            });
+                        </script>
+                    <?php endwhile; ?>
                 </div>
             </div>
         </div>
@@ -79,18 +75,50 @@ function insert()
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.button').click(function() {
+            $('.insert-button').click(function() {
                 var clickBtnValue = $(this).val();
-                var ajaxurl = 'user_boards.php',
+                var ajaxurl = 'backend.php',
                     data = {
                         'action': clickBtnValue
                     };
                 $.post(ajaxurl, data, function(response) {
                     // Response div goes here.
-                    alert("action performed successfully");
                 });
             });
         });
+
+        function ajaxGet(endpointUrl, returnFunction) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', endpointUrl, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status == 200) {
+                        // When ajax call is complete, call this function, pass a string with the response
+                        returnFunction(xhr.responseText);
+                    } else {
+                        alert('AJAX Error.');
+                        console.log(xhr.status);
+                    }
+                }
+            }
+            xhr.send();
+        };
+
+        function ajaxPost(endpointUrl, returnFunction) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', endpointUrl, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status == 200) {
+                        returnFunction(xhr.responseText);
+                    } else {
+                        alert('AJAX Error.');
+                        console.log(xhr.status);
+                    }
+                }
+            }
+            xhr.send(postdata);
+        };
     </script>
 </body>
 

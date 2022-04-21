@@ -1,5 +1,4 @@
 <?php
-require 'config/config.php';
 
 $error_true = false;
 
@@ -88,15 +87,26 @@ if (
                 <div class="line-vertical"></div>
                 <div class="line-horizontal"></div>
                 <div class="login-wrapper fade-in">
-                    <?php if ($isLoggedIn) : ?>
-                        <div class="login-text"><?php echo "Hello " . $_SESSION["username"] . "!"; ?></div>
-                        <a href="user_boards.php" class="login">Enter App! 🍩</a>
+                    <?php if (!$error_true) : ?>
+                        <?php if ($_SESSION["isLoggedIn"]) : ?>
+                            <div class="login-text"><?php echo "Hello " . $_SESSION["username"] . "!"; ?></div>
+                            <a href="user_boards.php" class="login">Enter App! 🍩</a>
+                        <?php else : ?>
+                            <div class="login-text">Welcome Back.</div>
+                            <input type="text" class="login-input username" style="box-shadow: 0 0 10px 0.5px #ffdada;
+;" placeholder="username" name="username">
+                            <input type="text" class="login-input password" style="box-shadow: 0 0 10px 0.5px #ffdada;
+;" placeholder="password" name="password">
+                            <button class='login' onclick="location.href = 'login.php';">Let's Go! 🍩</button>
+                            <div class="login-options">
+                                <a href="register_form.php" class="text">i'm new!</a>
+                                <a class="text">forgot password?</a>
+                            </div>
+                        <?php endif; ?>
                     <?php else : ?>
                         <div class="login-text">Welcome Back.</div>
-                        <input type="text" class="login-input username" style="box-shadow: 0 0 10px 0.5px #ffdada;
-;" placeholder="username" name="username">
-                        <input type="text" class="login-input password" style="box-shadow: 0 0 10px 0.5px #ffdada;
-;" placeholder="password" name="password">
+                        <input type="text" class="login-input username" placeholder="username" name="username">
+                        <input type="text" class="login-input password" placeholder="password" name="password">
                         <button class='login' onclick="location.href = 'login.php';">Let's Go! 🍩</button>
                         <div class="login-options">
                             <a href="register_form.php" class="text">i'm new!</a>
