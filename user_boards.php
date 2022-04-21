@@ -1,4 +1,7 @@
 <?php
+
+$showAnim = true;
+
 require('./util/db_connect.php');
 
 $sql = "SELECT * FROM user_boards";
@@ -35,41 +38,38 @@ $mysqli->close();
     <?php $type = "board";
     require('./navbar/navbar.php') ?>
 
-    <form>
-        <div class="container container-boards">
-            <div class="boards-wrapper">
-                <div style="display: flex; justify-content: space-between">
-                    <div class="boards-title">my boards</div>
-                    <input type="submit" class="insert-button" name="select" value="insert" />
-                </div>
-                <hr>
-                <div class="item-wrapper">
+    <div class="container container-boards fade-in">
+        <div class="boards-wrapper">
+            <div style="display: flex; justify-content: space-between">
+                <div class="boards-title">my boards</div>
+                <button class="insert-button" name="select" value="title" >insert</button>
+            </div>
+            <hr>
+            <div class="item-wrapper">
 
-                    <?php while ($row = $results->fetch_assoc()) : ?>
-                        <div class="board-item fade-in">
-                            <a href="main.php" class="board-item-name" id=<?php echo $row["board_items_id"] ?>><?php echo $row["name"] ?></a>
-                            <div class="board-item-last-used">2 hours ago</div>
-                        </div>
-                        <script>
-                            var item = document.getElementById("<?php echo $row["board_items_id"] ?>");
+                <?php while ($row = $results->fetch_assoc()) : ?>
+                    <div class="board-item fade-in">
+                        <a href="main.php" class="board-item-name" id=<?php echo $row["board_items_id"] ?>><?php echo $row["name"] ?></a>
+                        <div class="board-item-last-used">2 hours ago</div>
+                    </div>
+                    <script>
+                        var item = document.getElementById("<?php echo $row["board_items_id"] ?>");
 
-                            console.log(item);
+                        console.log(item);
 
-                            var closeButton = document.createElement("div");
-                            closeButton.className = "closeButton";
+                        var closeButton = document.createElement("div");
+                        closeButton.className = "closeButton";
 
-                            item.append(closeButton)
+                        item.append(closeButton)
 
-                            closeButton.addEventListener("click", () => {
-                                deleteHelper(item);
-                            });
-                        </script>
-                    <?php endwhile; ?>
-                </div>
+                        closeButton.addEventListener("click", () => {
+                            deleteHelper(item);
+                        });
+                    </script>
+                <?php endwhile; ?>
             </div>
         </div>
-
-    </form>
+    </div>
     <!-- <button class="box-shadow" id="addInputButton" type="button">+</button>
     <button class="box-shadow" id="infoButton" type="button">?</button> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
