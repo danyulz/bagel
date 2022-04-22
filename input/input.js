@@ -103,7 +103,7 @@ const testListener = (input, command) => {
 
 const createNewBoardItem = (input, command) => {
     if (commandParser(command) == "new") {
-        var clickBtnValue = $(this).val();
+        var clickBtnValue = 'test';
         var ajaxurl = 'createBoardItem.php',
             data = {
                 'action': clickBtnValue,
