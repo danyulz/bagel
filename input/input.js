@@ -103,16 +103,17 @@ const testListener = (input, command) => {
 
 const createNewBoardItem = (input, command) => {
     if (commandParser(command) == "new") {
-        var clickBtnValue = 'test';
-        var ajaxurl = 'createBoardItem.php',
-            data = {
-                'action': clickBtnValue,
-                'user_id': userId
-            };
-        $.post(ajaxurl, data, function (response) {
-            // Response div goes here.
-            createBoardItem(++lastItemId, 'new board...')
-        });
+        createBoardItem(++lastItemId, 'new board...')
+        // var clickBtnValue = 'test';
+        // var ajaxurl = 'createBoardItem.php',
+        //     data = {
+        //         'action': clickBtnValue,
+        //         'user_id': userId
+        //     };
+        // $.post(ajaxurl, data, function (response) {
+        //     // Response div goes here.
+        //     createBoardItem(++lastItemId, 'new board...')
+        // });
     }
 }
 
