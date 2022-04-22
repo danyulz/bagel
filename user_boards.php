@@ -64,6 +64,7 @@ if ($_SESSION != null) {
         let boardWrapper = document.querySelector(".item-wrapper");
 
         let lastItemId = 0;
+        let userId = <?php echo $_SESSION["user_id"]; ?>;
 
         const createBoardItem = (id, name) => {
             let itemWrapper = document.createElement("div");
@@ -128,7 +129,7 @@ if ($_SESSION != null) {
                 var ajaxurl = 'createBoardItem.php',
                     data = {
                         'action': clickBtnValue,
-                        'user_id': <?php echo $_SESSION["user_id"]; ?>
+                        'user_id': userId
                     };
                 $.post(ajaxurl, data, function(response) {
                     // Response div goes here.
@@ -136,6 +137,7 @@ if ($_SESSION != null) {
                 });
             });
         });
+
     </script>
 
 </body>

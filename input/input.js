@@ -103,7 +103,16 @@ const testListener = (input, command) => {
 
 const createNewBoardItem = (input, command) => {
     if (commandParser(command) == "new") {
-        createBoardItem(++lastItemId, "test");
+        var clickBtnValue = $(this).val();
+        var ajaxurl = 'createBoardItem.php',
+            data = {
+                'action': clickBtnValue,
+                'user_id': userId
+            };
+        $.post(ajaxurl, data, function (response) {
+            // Response div goes here.
+            createBoardItem(++lastItemId, 'new board...')
+        });
     }
 }
 
