@@ -2,7 +2,7 @@
 
 require('./util/db_connect.php');
 
-$sql = "INSERT INTO user_boards (user_id, name) VALUES (1, '". $_POST["action"] ."');";
+$sql = "INSERT INTO user_boards (user_id, name) VALUES (". $_POST["user_id"] .", '". $_POST["action"] ."');";
 
 $results = $mysqli->query($sql);
 

@@ -1,24 +1,32 @@
 <?php
 
-$showAnim = true;
+session_start();
 
-require('./util/db_connect.php');
+if ($_SESSION != null) {
+    if ($_SESSION["isLoggedIn"]) {
 
-$sql = "SELECT * FROM user_boards";
+        $showAnim = true;
 
-$results = $mysqli->query($sql);
+        require('./util/db_connect.php');
 
-if (!$results) {
-    echo $mysqli->error;
-    exit();
+        $sql = "SELECT * FROM user_boards WHERE user_id = " . $_SESSION["user_id"];
+
+        $results = $mysqli->query($sql);
+
+        // var_dump($_SESSION);
+
+        if (!$results) {
+            echo $mysqli->error;
+            exit();
+        }
+
+        $mysqli->close();
+    }
 }
 
-// while ($row = $results->fetch_assoc()) {
-//     var_dump($row);
-//     echo "<hr></hr>";
-// }
+// echo $_SESSION["user_id"];
 
-$mysqli->close();
+
 ?>
 
 <head>
@@ -37,89 +45,99 @@ $mysqli->close();
 <body>
     <?php $type = "board";
     require('./navbar/navbar.php') ?>
-
     <div class="container container-boards fade-in">
         <div class="boards-wrapper">
             <div style="display: flex; justify-content: space-between">
                 <div class="boards-title">my boards</div>
-                <button class="insert-button" name="select" value="title" >insert</button>
+                <button class="insert-button" name="select" value="title">insert</button>
             </div>
             <hr>
             <div class="item-wrapper">
-
-                <?php while ($row = $results->fetch_assoc()) : ?>
-                    <div class="board-item fade-in">
-                        <a href="main.php" class="board-item-name" id=<?php echo $row["board_items_id"] ?>><?php echo $row["name"] ?></a>
-                        <div class="board-item-last-used">2 hours ago</div>
-                    </div>
-                    <script>
-                        var item = document.getElementById("<?php echo $row["board_items_id"] ?>");
-
-                        console.log(item);
-
-                        var closeButton = document.createElement("div");
-                        closeButton.className = "closeButton";
-
-                        item.append(closeButton)
-
-                        closeButton.addEventListener("click", () => {
-                            deleteHelper(item);
-                        });
-                    </script>
-                <?php endwhile; ?>
+                <input id="board-input" class="board-item"></input>
             </div>
         </div>
     </div>
     <!-- <button class="box-shadow" id="addInputButton" type="button">+</button>
     <button class="box-shadow" id="infoButton" type="button">?</button> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="input/input.js"></script>
+    <script> //board-items
+        let boardWrapper = document.querySelector(".item-wrapper");
+
+        let lastItemId = 0;
+
+        const createBoardItem = (id, name) => {
+            let itemWrapper = document.createElement("div");
+            // itemWrapper.href = "main.php";
+            itemWrapper.className = "board-item fade-in";
+            itemWrapper.id = "item-" + id;
+
+            let itemName = document.createElement("a");
+            itemName.href = "main.php";
+            itemName.className = "board-item-name";
+            itemName.innerText = name;
+            itemName.id = "item-name-" + id;
+
+            let lastUsed = document.createElement("div");
+            lastUsed.className = "board-item-last-used";
+            lastUsed.innerText = "2 hours ago";
+
+            let closeButton = document.createElement("div");
+            closeButton.className = "closeButton";
+
+            closeButton.addEventListener("click", () => {
+
+                console.log("deleting Item");
+                itemWrapper.className += " pop-out";
+                setTimeout(function() {
+                    itemWrapper.remove();
+                }, 150);
+
+                var ajaxurl = 'deleteBoardItem.php',
+                    data = {
+                        'board_items_id': id
+                    };
+                $.post(ajaxurl, data, function(response) {
+                    console.log(response);
+                });
+
+            });
+
+            itemWrapper.append(itemName);
+            itemWrapper.append(closeButton);
+            itemWrapper.append(lastUsed);
+
+            boardWrapper.append(itemWrapper);
+        }
+
+        <?php while ($row = $results->fetch_assoc()) : ?>
+            lastItemId = <?php echo $row["board_items_id"] ?>;
+            createBoardItem(<?php echo $row["board_items_id"] ?>, '<?php echo $row["name"] ?>');
+        <?php endwhile; ?>
+    </script>
     <script>
+        let boardInput = document.getElementById("board-input");
+        console.log(boardInput);
+
+        addListeners(boardInput, "boardInput");
+    </script>
+    <script> //ajax function
         $(document).ready(function() {
             $('.insert-button').click(function() {
                 var clickBtnValue = $(this).val();
-                var ajaxurl = 'backend.php',
+                var ajaxurl = 'createBoardItem.php',
                     data = {
-                        'action': clickBtnValue
+                        'action': clickBtnValue,
+                        'user_id': <?php echo $_SESSION["user_id"]; ?>
                     };
                 $.post(ajaxurl, data, function(response) {
                     // Response div goes here.
+                    createBoardItem(++lastItemId, 'new board...')
                 });
             });
         });
-
-        function ajaxGet(endpointUrl, returnFunction) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', endpointUrl, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    if (xhr.status == 200) {
-                        // When ajax call is complete, call this function, pass a string with the response
-                        returnFunction(xhr.responseText);
-                    } else {
-                        alert('AJAX Error.');
-                        console.log(xhr.status);
-                    }
-                }
-            }
-            xhr.send();
-        };
-
-        function ajaxPost(endpointUrl, returnFunction) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', endpointUrl, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    if (xhr.status == 200) {
-                        returnFunction(xhr.responseText);
-                    } else {
-                        alert('AJAX Error.');
-                        console.log(xhr.status);
-                    }
-                }
-            }
-            xhr.send(postdata);
-        };
     </script>
+
 </body>
 
 </html>

@@ -48,6 +48,10 @@ hr {
     margin-bottom: 2px;
 }
 
+#board-input, #boart-input:hover, #board-input:focus {
+    border-width: 0;
+}
+
 
 
 @media only screen and (max-width: 792px) {

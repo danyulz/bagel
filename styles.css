@@ -20,7 +20,7 @@ textarea {
     padding-top: 10px;
 }
 
-textarea:focus {
+textarea:focus, input:focus {
     outline: none;
 }
 

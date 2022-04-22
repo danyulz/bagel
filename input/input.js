@@ -7,17 +7,19 @@ let start_idxs = [0];
 let focusIndex = 1;
 
 
-const addListeners = (input) => {
+const addListeners = (input, listenerType) => {
+
+    console.log(listenerType);
 
     input.addEventListener("input", () => {
 
         if (input.value.includes("/")) {
-            addAllCommands(input);
+            addAllCommands(input, listenerType);
         }
     })
 }
 
-const addAllCommands = (input) => {
+const addAllCommands = (input, listenerType) => {
 
     input.addEventListener("input", function (event) {
 
@@ -27,7 +29,7 @@ const addAllCommands = (input) => {
         if (command != " ") {
             //command has ended, i.e. user has pressed space bar
             if (command.includes(" ")) {
-                runListeners(input, command);
+                runListeners(input, command, listenerType);
                 clearCommands_SpaceBar(input, command);
             }
         }
@@ -40,20 +42,27 @@ const addAllCommands = (input) => {
         if (command != "") {
             if (e.keyCode == 13) {
                 e.preventDefault();
-                runListeners(input, command);
+                runListeners(input, command, listenerType);
                 clearCommands_Enter(input, command);
             }
         }
     })
 }
 
-const runListeners = (input, command) => {
-    fontSizeListener(input, command);
-    colorListener(input, command);
-    textStyleListener(input, command);
-    deleteListener(input, command);
-    minimizeListener(input, command);
-    testListener(input, command);
+const runListeners = (input, command, listenerType) => {
+
+    console.log(listenerType);
+
+    if (listenerType == "boardItem") {
+        fontSizeListener(input, command);
+        colorListener(input, command);
+        textStyleListener(input, command);
+        deleteListener(input, command);
+        minimizeListener(input, command);
+        testListener(input, command);
+    } else if (listenerType == "boardInput") {
+
+    }
 }
 
 const commandListener = (input) => {
@@ -101,7 +110,7 @@ const testListener = (input, command) => {
 
         let pos = [top, left];
         // console.log(pos);
-        newInput(pos, inputWrapper.style.zIndex+1);
+        newInput(pos, inputWrapper.style.zIndex + 1);
     }
 
     console.log(commandParser(command))
@@ -182,7 +191,7 @@ const textStyleListener = (input, command) => {
     //ITALIZICIZE
     if (command_parsed == "tilt" || command_parsed == "i" || command_parsed == "slant") {
         input.style.fontStyle = "italic";
-    } 
+    }
     if (command_parsed == "r") {
         input.style.fontStyle = "initial";
         input.style.fontWeight = "initial";
@@ -213,15 +222,15 @@ const deleteHelper = (inputWrapper) => {
 
 const addInputWrapperDynamicSizing = (inputWrapper, input) => {
 
-    $("#"+inputWrapper.id).on('input', function () {
+    $("#" + inputWrapper.id).on('input', function () {
 
         let height = input.style.height > input.scrollHeight ? input.style.height : input.scrollHeight;
         $(input)
             .height(height)
             .width(input.scrollWidth)
-        ;
+            ;
 
-        $("#" + inputWrapper.id).width(inputWrapper.scrollWidth);       
+        $("#" + inputWrapper.id).width(inputWrapper.scrollWidth);
     });
 }
 
@@ -338,8 +347,8 @@ $("#infoButton").click(() => {
     newInput.style.paddingInline = "2px";
     newInput.style.fontFamily = "'DM Sans', sans-serif";
 
-    newInput.innerHTML = 
-    "tips & tricks! \n\ncolors: /anycolor \n\nfont size: /# /h1, h2 ... \n\nfont style: /bold /b /tilt /i /r ... \n\n shortcuts: /clear /close /q /bye /delete /del"
+    newInput.innerHTML =
+        "tips & tricks! \n\ncolors: /anycolor \n\nfont size: /# /h1, h2 ... \n\nfont style: /bold /b /tilt /i /r ... \n\n shortcuts: /clear /close /q /bye /delete /del"
 
     newInput.spellcheck = false;
     newInput.wrap = "on";
@@ -365,7 +374,7 @@ $("#infoButton").click(() => {
     $(".container").append(newInputWrapper);
 
     dragElement(newInputWrapper);
-    addListeners(newInput);
+    addListeners(newInput, "boardItem");
 
     inputCount++;
 });
@@ -378,13 +387,13 @@ const newInput = (pos, zIndex) => {
     newInputWrapper.style.backgroundColor = "#f7f7f7";
     newInputWrapper.style.position = "absolute";
     newInputWrapper.style.borderRadius = "5px";
-    newInputWrapper.style.zIndex = zIndex;  
+    newInputWrapper.style.zIndex = zIndex;
     newInputWrapper.style.boxShadow = "0 0 10px 0.5px #d9d9d9";
-    
+
     if (pos != null) {
         newInputWrapper.style.top = pos[0];
         newInputWrapper.style.left = pos[1];
-    } 
+    }
 
     // newInputWrapper.addEventListener("mouseleave", () => {
     //     console.log("hovering");
@@ -441,7 +450,7 @@ const newInput = (pos, zIndex) => {
     $(".container").append(newInputWrapper);
 
     dragElement(newInputWrapper);
-    addListeners(newInput);
+    addListeners(newInput, "boardItem");
 
     inputCount++;
 }

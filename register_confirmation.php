@@ -10,12 +10,7 @@ if (
     $error_true = true;
 } else {
 
-    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-    if ($mysqli->connect_errno) {
-        echo $mysqli->connect_error;
-        exit();
-    }
+    require('./util/db_connect.php');
 
     $statement_registered = $mysqli->prepare("SELECT * FROM users WHERE username=?");
     $statement_registered->bind_param("s", $_POST["username"]);
@@ -26,8 +21,6 @@ if (
     }
 
     $statement_registered->store_result();
-
-    echo $statement_registered->num_rows;
 
     if ($statement_registered->num_rows > 0) {
         $error_true = true;

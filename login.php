@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 $error_true = false;
 
 if (
@@ -22,20 +24,31 @@ if (
         echo $mysqli->error;
     }
 
-    $statement_registered->store_result();
+    $result = $statement_registered->get_result();
 
-    $_SESSION["isLoggedIn"] = false;
-
-    if ($statement_registered->num_rows > 0) {
-        $isLoggedIn = true;
-        $error = "Successfully Log In!";
-
-        $_SESSION["username"] = $_POST["username"];
-        $_SESSION["isLoggedIn"] = true;
-        $statement_registered->close();
-    } else {
-        $error = "Could not Login!";
+    while ($row = $result->fetch_object()) {
+        $arr[] = $row;
     }
+
+    if (!$arr) {
+        exit('No rows');
+    } else {
+        $_SESSION["isLoggedIn"] = false;
+
+        if ($result->num_rows > 0) {
+            $isLoggedIn = true;
+            $error = "Successfully Log In!";
+
+            $_SESSION["username"] = $_POST["username"];
+            $_SESSION["isLoggedIn"] = true;
+            $_SESSION["user_id"] = $arr[0]->users_id;
+            echo $_SESSION["user_id"];
+        } else {
+            $error = "Could not Login!";
+        }
+    }
+
+    $statement_registered->close();
 }
 ?>
 
@@ -53,7 +66,8 @@ if (
 </head>
 
 <body>
-    <?php $type = "login";
+    <?php
+    $type = "login";
     require('./navbar/navbar.php') ?>
     <form action="login.php" method="POST">
 
