@@ -61,7 +61,7 @@ const runListeners = (input, command, listenerType) => {
         minimizeListener(input, command);
         testListener(input, command);
     } else if (listenerType == "boardInput") {
-
+        createNewBoardItem(input, command);
     }
 }
 
@@ -99,24 +99,11 @@ const commandParser = (command) => {
 }
 
 const testListener = (input, command) => {
+}
+
+const createNewBoardItem = (input, command) => {
     if (commandParser(command) == "new") {
-        let inputWrapper = document.querySelector("#" + input.id + "-wrapper");
-
-        let top = (+(inputWrapper.style.top.replace("px", "")) + 10) + "px";
-        let left = (+(inputWrapper.style.left.replace("px", "")) + 10) + "px";
-
-        console.log(top);
-        console.log(left);
-
-        let pos = [top, left];
-        // console.log(pos);
-        newInput(pos, inputWrapper.style.zIndex + 1);
-    }
-
-    console.log(commandParser(command))
-    if (commandParser(command) == "clear") {
-        input.value = "";
-        start_idxs[input.attributes.inputCount] = 0;
+        createBoardItem(++lastItemId, "test");
     }
 }
 
@@ -208,6 +195,26 @@ const deleteListener = (input, command) => {
     if (commandParser(command) == "q" || commandParser(command) == "delete" || commandParser(command) == "del" || commandParser(command) == "dlt" || commandParser(command) == "close" || commandParser(command) == "quit") {
         console.log("deleting");
         deleteHelper(document.querySelector("#" + input.id + "-wrapper"));
+    }
+
+    if (commandParser(command) == "new") {
+        let inputWrapper = document.querySelector("#" + input.id + "-wrapper");
+
+        let top = (+(inputWrapper.style.top.replace("px", "")) + 10) + "px";
+        let left = (+(inputWrapper.style.left.replace("px", "")) + 10) + "px";
+
+        console.log(top);
+        console.log(left);
+
+        let pos = [top, left];
+        // console.log(pos);
+        newInput(pos, inputWrapper.style.zIndex + 1);
+    }
+
+    console.log(commandParser(command))
+    if (commandParser(command) == "clear") {
+        input.value = "";
+        start_idxs[input.attributes.inputCount] = 0;
     }
 }
 

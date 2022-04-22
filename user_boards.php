@@ -60,7 +60,6 @@ if ($_SESSION != null) {
     <!-- <button class="box-shadow" id="addInputButton" type="button">+</button>
     <button class="box-shadow" id="infoButton" type="button">?</button> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="input/input.js"></script>
     <script> //board-items
         let boardWrapper = document.querySelector(".item-wrapper");
 
@@ -115,6 +114,7 @@ if ($_SESSION != null) {
             createBoardItem(<?php echo $row["board_items_id"] ?>, '<?php echo $row["name"] ?>');
         <?php endwhile; ?>
     </script>
+    <script src="input/input.js"></script>
     <script>
         let boardInput = document.getElementById("board-input");
         console.log(boardInput);
