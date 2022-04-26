@@ -53,7 +53,7 @@ if ($_SESSION != null) {
             </div>
             <hr>
             <div class="item-wrapper">
-                <input id="board-input" class="board-item" placeholder="// start typing..."></input>
+                <input id="board-input" class="board-item" placeholder="/start typing..."></input>
             </div>
         </div>
     </div>
@@ -101,6 +101,7 @@ if ($_SESSION != null) {
         <?php endwhile; ?>
     </script>
     <script src="input/input.js"></script>
+    <script src="boardInput/boardInput.js"></script>
     <script>
         let boardInput = document.getElementById("board-input");
         console.log(boardInput);

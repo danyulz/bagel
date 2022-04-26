@@ -12,26 +12,9 @@
 </head>
 
 <body>
-    <div class="navbar">
-        <div class="navbar-logo">
-            <div id="navbar-title">🍩 bagel.</div>
-        </div>
-        <div class="navbar-buttons">
-            <div class="button-wrapper">
-                <a href="main.html" class="button home">home</a>
-                <div class="icon">🚩</div>
-            </div>
-            <div class="button-wrapper">
-                <a href="user_boards.html" class="button boards">boards</a>
-                <div class="icon">📋</div>
-            </div>
-            <div class="button-wrapper">
-                <a href="login.html" class="button profile selected">me</a>
-                <div class="icon">😉</div>
-            </div>
-        </div>
-    </div>
-
+    <?php
+    $type = "login";
+    require('./navbar/navbar.php') ?>
     <form action="register_confirmation.php" method="POST">
 
         <div class="container">
