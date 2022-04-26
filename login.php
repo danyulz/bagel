@@ -42,7 +42,7 @@ if (
             $_SESSION["username"] = $_POST["username"];
             $_SESSION["isLoggedIn"] = true;
             $_SESSION["user_id"] = $arr[0]->users_id;
-            echo $_SESSION["user_id"];
+            // echo $_SESSION["user_id"];
         } else {
             $error = "Could not Login!";
         }

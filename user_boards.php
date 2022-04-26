@@ -49,18 +49,19 @@ if ($_SESSION != null) {
         <div class="boards-wrapper">
             <div style="display: flex; justify-content: space-between">
                 <div class="boards-title">my boards</div>
-                <button class="insert-button" name="select" value="title">insert</button>
+                <!-- <button class="insert-button" name="select" value="title">insert</button> -->
             </div>
             <hr>
             <div class="item-wrapper">
-                <input id="board-input" class="board-item"></input>
+                <input id="board-input" class="board-item" placeholder="// start typing..."></input>
             </div>
         </div>
     </div>
     <!-- <button class="box-shadow" id="addInputButton" type="button">+</button>
     <button class="box-shadow" id="infoButton" type="button">?</button> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script> //board-items
+    <script>
+        //board-items
         let boardWrapper = document.querySelector(".item-wrapper");
 
         let lastItemId = 0;
@@ -85,23 +86,7 @@ if ($_SESSION != null) {
             let closeButton = document.createElement("div");
             closeButton.className = "closeButton";
 
-            closeButton.addEventListener("click", () => {
-
-                console.log("deleting Item");
-                itemWrapper.className += " pop-out";
-                setTimeout(function() {
-                    itemWrapper.remove();
-                }, 150);
-
-                var ajaxurl = 'deleteBoardItem.php',
-                    data = {
-                        'board_items_id': id
-                    };
-                $.post(ajaxurl, data, function(response) {
-                    console.log(response);
-                });
-
-            });
+            closeButton.addEventListener("click", () => addDeleteBoard(itemWrapper));
 
             itemWrapper.append(itemName);
             itemWrapper.append(closeButton);
@@ -121,8 +106,27 @@ if ($_SESSION != null) {
         console.log(boardInput);
 
         addListeners(boardInput, "boardInput");
+
+        const addDeleteBoard = (board) => {
+
+            let id = board.id.replace("item-", "");
+            board.className += " pop-out";
+            setTimeout(function() {
+                board.remove();
+            }, 150);
+
+            var ajaxurl = 'deleteBoardItem.php',
+                data = {
+                    'board_items_id': id 
+                };
+            $.post(ajaxurl, data, function(response) {
+                console.log(response);
+            });
+        }
+
     </script>
-    <script> //ajax function
+    <script>
+        //ajax function
         $(document).ready(function() {
             $('.insert-button').click(function() {
                 var clickBtnValue = $(this).val();
@@ -137,7 +141,6 @@ if ($_SESSION != null) {
                 });
             });
         });
-
     </script>
 
 </body>
