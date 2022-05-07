@@ -94,6 +94,15 @@ textarea:focus, input:focus {
     transform: scale(1.05);
 }
 
+.save-button {
+    border: none;
+    border-radius: 5px;
+    font-family: "DM Sans", sans-serif;
+    position: absolute;
+    right: 4rem;
+    bottom: 1.5rem;
+}
+
 .fade-in {
     animation: fadeInAnimation 1s ease 1, pop-in 0.2s ease-in 1;
 }

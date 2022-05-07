@@ -23,6 +23,8 @@ const addAllCommands = (input, listenerType) => {
 
     input.addEventListener("input", function (event) {
 
+        console.log(start_idxs[input.attributes.inputCount]);
+
         let command = commandListener(input);
 
         //command is not empty
@@ -51,8 +53,6 @@ const addAllCommands = (input, listenerType) => {
 
 const runListeners = (input, command, listenerType) => {
 
-    console.log(listenerType);
-
     if (listenerType == "boardItem") {
         fontSizeListener(input, command);
         colorListener(input, command);
@@ -71,11 +71,11 @@ const commandListener = (input) => {
 
     //determine where command starts (idx)
 
-    let idx = start_idxs[input.attributes.inputCount] > input.value.length - 1 ? start_idxs[input.attributes.inputCount] - 1 : input.value.length - 1;
+    let idx = start_idxs[input.attributes.inputCount] < input.value.length - 1 ? start_idxs[input.attributes.inputCount] - 1 : input.value.length - 1;
 
     //if no commands have been made '/'
     if (start_idxs[input.attributes.inputCount] == 0) {
-        idx = input.value.length - 1
+        idx = input.value.length - 1;
     }
 
     for (let i = idx; i < input.value.length; ++i) {
@@ -199,8 +199,8 @@ const deleteListener = (input, command) => {
         let top = (+(inputWrapper.style.top.replace("px", "")) + 10) + "px";
         let left = (+(inputWrapper.style.left.replace("px", "")) + 10) + "px";
 
-        console.log(top);
-        console.log(left);
+        // console.log(top);
+        // console.log(left);
 
         let pos = [top, left];
         // console.log(pos);
@@ -305,93 +305,25 @@ function dragElement(elmnt) {
     }
 }
 
-$("#infoButton").click(() => {
+const newInput = (pos, zIndex, css_id, css_style, css_value, css_textarea_style) => {
+
+    let input_id = css_id == null ? inputCount : css_id;
+    console.log(input_id)
+
     var newInputWrapper = document.createElement("div");
-    newInputWrapper.id = "textarea-" + inputCount + "-wrapper";
+    newInputWrapper.id = "textarea-" + input_id  + "-wrapper";
     newInputWrapper.className = "fade-in";
 
-    newInputWrapper.style.backgroundColor = "#f7f7f7";
-    newInputWrapper.style.position = "absolute";
-    newInputWrapper.style.borderRadius = "5px";
-    newInputWrapper.style.boxShadow = "0 0 10px 0.5px #d9d9d9";
+    if (css_style == null) {        
+        newInputWrapper.style.backgroundColor = "#f7f7f7";
+        newInputWrapper.style.position = "absolute";
+        newInputWrapper.style.borderRadius = "5px";
+        newInputWrapper.style.zIndex = zIndex;
+        newInputWrapper.style.boxShadow = "0 0 10px 0.5px #d9d9d9";
+    } else {
+        newInputWrapper.style = css_style;
+    }
 
-    // newInputWrapper.addEventListener("mouseleave", () => {
-    //     console.log("hovering");
-    //     minimizeHelper(newInput);
-    // })
-
-    var newInputHeader = document.createElement("div");
-    newInputHeader.style.minHeight = "15px"
-    newInputHeader.style.paddingInline = "3px";
-    newInputHeader.style.fontSize = "0.8rem";
-    newInputHeader.style.display = "flex";
-    newInputHeader.style.alignItems = "center";
-    newInputHeader.style.justifyContent = "space-between";
-
-    newInputHeader.addEventListener("mouseenter", () => {
-        maximizeHelper(newInput);
-    })
-
-    newInputHeader.id = newInputWrapper.id + "header";
-    newInputHeader.className = "inputHeader";
-
-    var line = document.createElement("hr");
-    line.style.borderColor = "#e6e6e6";
-    line.style.marginTop = "0";
-    line.style.marginBottom = "0";
-    line.style.borderStyle = "solid";
-    line.style.borderWidth = "0.5px";
-
-    var newInput = document.createElement("textarea");
-    newInput.attributes.inputCount = inputCount;
-    newInput.id = "textarea-" + inputCount;
-    newInput.style.backgroundColor = "#f7f7f7";
-    newInput.style.marginInline = "3px";
-    newInput.style.paddingInline = "2px";
-    newInput.style.fontFamily = "'DM Sans', sans-serif";
-
-    newInput.innerHTML =
-        "tips & tricks! \n\ncolors: /anycolor \n\nfont size: /# /h1, h2 ... \n\nfont style: /bold /b /tilt /i /r ... \n\n shortcuts: /clear /close /q /bye /delete /del"
-
-    newInput.spellcheck = false;
-    newInput.wrap = "on";
-    newInput.style.width = newInput.scrollWidth;
-    newInput.style.height = newInput.scrollHeight;
-
-    console.log(newInput.scrollWidth);
-    console.log(newInput.scrollHeight);
-
-    var closeButton = document.createElement("div");
-    closeButton.className = "closeButton";
-
-    closeButton.addEventListener("click", () => {
-        deleteHelper(newInputWrapper);
-    });
-
-    addInputWrapperDynamicSizing(newInputWrapper, newInput);
-    newInputHeader.appendChild(closeButton);
-    newInputWrapper.appendChild(newInputHeader);
-    newInputWrapper.appendChild(line);
-    newInputWrapper.appendChild(newInput);
-
-    $(".container").append(newInputWrapper);
-
-    dragElement(newInputWrapper);
-    addListeners(newInput, "boardItem");
-
-    inputCount++;
-});
-
-const newInput = (pos, zIndex) => {
-    var newInputWrapper = document.createElement("div");
-    newInputWrapper.id = "textarea-" + inputCount + "-wrapper";
-    newInputWrapper.className = "fade-in";
-
-    newInputWrapper.style.backgroundColor = "#f7f7f7";
-    newInputWrapper.style.position = "absolute";
-    newInputWrapper.style.borderRadius = "5px";
-    newInputWrapper.style.zIndex = zIndex;
-    newInputWrapper.style.boxShadow = "0 0 10px 0.5px #d9d9d9";
 
     if (pos != null) {
         newInputWrapper.style.top = pos[0];
@@ -427,12 +359,19 @@ const newInput = (pos, zIndex) => {
     line.style.borderWidth = "0.5px";
 
     var newInput = document.createElement("textarea");
-    newInput.attributes.inputCount = inputCount;
-    newInput.id = "textarea-" + inputCount;
-    newInput.style.backgroundColor = "#f7f7f7";
-    newInput.style.marginInline = "3px";
-    newInput.style.paddingInline = "2px";
-    newInput.style.fontFamily = "'DM Sans', sans-serif";
+    newInput.attributes.inputCount = input_id;
+    newInput.id = "textarea-" + input_id;
+
+    if (css_textarea_style == null) {
+        newInput.style.backgroundColor = "#f7f7f7";
+        newInput.style.marginInline = "3px";
+        newInput.style.paddingInline = "2px";
+        newInput.style.fontFamily = "'DM Sans', sans-serif";
+    } else {
+        newInput.style = css_textarea_style;
+    }
+
+    newInput.innerText = css_value == null ? "" : css_value;
 
     newInput.spellcheck = false;
     newInput.wrap = "on";
@@ -455,9 +394,9 @@ const newInput = (pos, zIndex) => {
     dragElement(newInputWrapper);
     addListeners(newInput, "boardItem");
 
-    inputCount++;
+    if (css_id == null) {
+        inputCount++;
+    } else {
+        inputCount = css_id+1;
+    }
 }
-
-$("#addInputButton").click(() => {
-    newInput();
-}) 

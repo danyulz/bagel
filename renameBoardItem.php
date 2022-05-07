@@ -2,7 +2,7 @@
 
 require('./util/db_connect.php');
 
-$sql = "UPDATE user_boards SET (name) VALUES ('".$_POST["action"]."');";
+$sql = "UPDATE user_boards SET (name) VALUES ('".$_POST["action"]."') WHERE     ;";
 
 $results = $mysqli->query($sql);
 

@@ -74,7 +74,7 @@ if ($_SESSION != null) {
             itemWrapper.id = "item-" + id;
 
             let itemName = document.createElement("a");
-            itemName.href = "main.php";
+            itemName.href = "main.php?board_id="+id;
             itemName.className = "board-item-name";
             itemName.innerText = name;
             itemName.id = "item-name-" + id;
@@ -118,13 +118,12 @@ if ($_SESSION != null) {
 
             var ajaxurl = 'deleteBoardItem.php',
                 data = {
-                    'board_items_id': id 
+                    'board_items_id': id
                 };
             $.post(ajaxurl, data, function(response) {
                 console.log(response);
             });
         }
-
     </script>
     <script>
         //ajax function

@@ -26,14 +26,16 @@ if (
 
     $result = $statement_registered->get_result();
 
+    $arr_exists = false;
     while ($row = $result->fetch_object()) {
+        $arr_exists = true;
         $arr[] = $row;
     }
 
-    if (!$arr) {
-        exit('No rows');
-    } else {
+    if ($arr_exists == false) {
         $_SESSION["isLoggedIn"] = false;
+        $error = "Incorrect username or password";
+    } else {
 
         if ($result->num_rows > 0) {
             $isLoggedIn = true;
